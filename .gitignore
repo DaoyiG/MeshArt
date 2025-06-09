@@ -1,0 +1,15 @@
+.vscode
+.DS_Store
+.ipynb_checkpoints
+__pycache__
+output
+backup
+*.egg-info
+logs
+runs
+wandb
+*.log
+build
+.so
+slurm
+*.pkl

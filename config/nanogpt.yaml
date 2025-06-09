@@ -1,0 +1,138 @@
+# data
+dataset: 'shapenet'
+dataset_root: 'data/v256_m2500_d5.pkl'
+num_tokens: 259
+
+gradient_accumulation_steps: 1 # used to simulate larger batch sizes
+batch_size: 4 # if gradient_accumulation_steps > 1, this is the micro-batch size
+block_size: 512
+padding: 0.25  # fraction of padding allowed
+
+scale_augment: True
+scale_augment_val: False
+
+shift_augment: False
+shift_augment_val: False
+
+max_vertices: 2500
+max_faces: 10000
+
+wandb_main: False # set to true to log to main board rather than debug board
+suffix: ''
+experiment: partnet
+seed: null
+save_epoch: 1
+save_root: 'runs'
+sanity_steps: 1
+val_check_percent: 1.0
+val_check_interval: 0.05
+resume: null
+num_workers: 8
+logger: wandb
+overfit: False
+
+train_structure_transformer: False
+load_geometry_features: False
+geometry_feature_path: 'data/geometry_features.pkl'
+injection_offset: -1 
+all_parts_per_epoch: False
+load_part_class_text_feature: data/archive/text_features.pkl'
+load_class_feature_mapping: 'data/inverse_text_features.pkl'
+inject_structure: False
+vq_resume_structure: null
+load_articulation_info: data/articulation_info.json
+load_structure_info: data/structure_info.json
+load_joint_text_feature: 'data/text_features_joints.pkl'
+joint_augment: False
+joint_augment_val: False
+cond_dropout: 0.0
+junction_augment: False
+junction_augment_val: False
+
+num_val_samples: 4
+num_completion_samples: 16
+max_val_tokens: 4000
+top_k_tokens: 200
+top_p: 0.9
+temperature: 0.8
+sequence_stride: 32
+use_class_ids: False
+use_smoothed_loss: False
+
+use_point_feats: False
+graph_conv: edge
+g_no_max_pool: True
+g_aggr: mean
+ce_output: True
+embed_dim: 384
+n_embed: 4096
+embed_loss_weight: 1.0
+embed_levels: 4
+tri_weight: 0.00
+norm_weight: 0.00
+area_weight: 0.00
+angle_weight: 0.00
+code_decay: 0.8
+embed_share: False
+transformer_selections_per_mesh: 32
+sequence_mode: False
+use_multimodal_loss: False
+
+vq_resume: null
+ft_resume: null
+ft_category: null
+transformer: noembed
+distribute_features: False
+order_invariant: False
+data_order_augmentation: False
+data_order_augmentation_val: False
+low_augment: False
+
+# model
+model:
+  in_emb: 3
+  n_layer: 8
+  n_head: 8
+  n_embd: 256
+  dropout: 0.0 # for pretraining 0 is good, for finetuning try 0.1+
+  bias: False # do we use bias inside LayerNorm and Linear layers?
+
+fencoder:
+  n_layer: 6
+  n_head: 6
+  n_embd: 384
+  dropout: 0.0 # for pretraining 0 is good, for finetuning try 0.1+
+  bias: False # do we use bias inside LayerNorm and Linear layers?
+  split: 128
+
+fdecoder:
+  use_xatt: False
+  in_emb: 1024
+  enable_in_emb: True
+  out_emb: 1024
+  n_layer: 6
+  n_head: 6
+  n_embd: 384
+  dropout: 0.0 # for pretraining 0 is good, for finetuning try 0.1+
+  bias: False # do we use bias inside LayerNorm and Linear layers?
+
+# adamw optimizer
+lr: 1e-4 # max learning rate
+force_lr: null
+max_epoch: 4 # total number of training iterations
+weight_decay: 1e-1
+beta1: 0.9
+beta2: 0.95
+grad_clip: 1.0 # clip gradients at this value, or disable if == 0.0
+
+# learning rate decay settings
+warmup_steps: 100 # how many steps to warm up for
+min_lr: 1e-5 # minimum learning rate, should be ~= learning_rate/10 per Chinchilla
+
+only_chairs: False
+stochasticity: 0.1
+
+hydra:
+  output_subdir: null # Disable saving of config files. We'll do that ourselves.
+  run:
+    dir: .
